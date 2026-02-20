@@ -39,10 +39,35 @@ export const metadata: Metadata = {
     "inversión industrial",
     "lotes industriales",
   ],
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     type: "website",
     locale: "es_MX",
     siteName: "El Norte del País",
+    title: "El Norte del País — Inteligencia del Mercado Industrial",
+    description: "Noticias, análisis e inteligencia del mercado de bienes raíces industriales en el norte de México.",
+    images: [
+      {
+        url: "/logos/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "El Norte del País - Inteligencia del Mercado Industrial",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "El Norte del País — Inteligencia del Mercado Industrial",
+    description: "Noticias, análisis e inteligencia del mercado de bienes raíces industriales en el norte de México.",
+    images: ["/logos/og-image.png"],
   },
 };
 
