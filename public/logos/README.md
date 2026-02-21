@@ -1,166 +1,154 @@
-# Logos - El Norte del País
+# Brand Kit - El Norte del País
 
-Este directorio contiene todos los formatos de logo para diferentes usos.
+**Fuente de verdad:** Este directorio (`~/.openclaw/workspace/elnortedelpais/assets/logos/`)
 
----
+## 📦 Estructura
 
-## 📦 Archivos Disponibles
-
-### SVG (Vectorial - Escalable)
-- **`logo.svg`** (400x400) - Logo cuadrado completo
-- **`logo-horizontal.svg`** (800x200) - Logo horizontal para headers
-- **`logo-icon.svg`** (512x512) - Ícono "NP" sobre fondo rojo
-
-### PNG (Rasterizado)
-
-#### Logos Principales
-- **`logo-400x400.png`** - Logo cuadrado para redes sociales (perfil)
-- **`logo-horizontal.png`** - Logo horizontal para headers/banners
-- **`og-image.png`** (1200x630) - Open Graph para Facebook/Twitter/LinkedIn
-
-#### Íconos/Favicon
-- **`icon-512x512.png`** - Ícono grande (PWA, Android)
-- **`favicon-16x16.png`** - Favicon pequeño
-- **`favicon-32x32.png`** - Favicon estándar
-- **`apple-touch-icon.png`** (180x180) - Ícono para iOS/Safari
-
----
-
-## 🎨 Diseño
-
-**Estilo:** The Economist Editorial
-
-**Colores:**
-- Rojo signature: `#E3120B`
-- Negro: `#1a1a1a`
-- Gris: `#6b6b6b`
-- Blanco: `#FFFFFF`
-
-**Tipografía:**
-- Headlines: Playfair Display (serif)
-- Tagline: Inter (sans-serif)
-
----
-
-## 📱 Uso por Plataforma
-
-### Facebook
-**Foto de perfil:** `logo-400x400.png`
-- Tamaño: 400x400 (se verá como círculo)
-- Formato: PNG
-- Asegúrate que el contenido importante esté en el centro
-
-**Foto de portada:** `logo-horizontal.png` (editar dimensiones a 820x312)
-- Tamaño recomendado: 820x312
-- Formato: PNG o JPG
-
-**Posts con link (Open Graph):** `og-image.png`
-- Tamaño: 1200x630
-- Se muestra automáticamente al compartir enlaces
-- Configurado en metadata del sitio
-
-### Instagram
-**Foto de perfil:** `logo-400x400.png`
-- Se verá como círculo
-- Asegúrate que "NP" sea visible en el centro
-
-**Posts:** `logo-400x400.png` o `logo-horizontal.png` (recortar a 1:1 o 4:5)
-
-### Twitter/X
-**Foto de perfil:** `logo-400x400.png`
-- Tamaño: 400x400 (mínimo 200x200)
-- Se verá como círculo
-
-**Header:** `logo-horizontal.png` (redimensionar a 1500x500)
-- Tamaño recomendado: 1500x500
-- Ten en cuenta que en mobile se recorta
-
-**Twitter Card:** `og-image.png`
-- 1200x630 configurado automáticamente
-
-### LinkedIn
-**Logo de empresa:** `logo-400x400.png`
-- Tamaño: 300x300 (recomendado 400x400)
-
-**Banner:** `logo-horizontal.png` (editar a 1128x191)
-
-**Posts con link:** `og-image.png`
-
-### Sitio Web
-**Header:** `logo-horizontal.svg` (SVG escalable)
-- Usa SVG para mejor calidad en pantallas retina
-
-**Favicon:** Configurado automáticamente en `layout.tsx`
-- 16x16, 32x32: navegadores
-- 180x180: Apple touch icon
-
-**Open Graph:** `og-image.png`
-- Se muestra al compartir en redes sociales
-
-### Email/Newsletter
-**Header de email:** `logo-horizontal.png`
-- 600-800px de ancho máximo
-- PNG para compatibilidad
-
-### Documentos/Print
-**Logo vectorial:** `logo.svg` o `logo-horizontal.svg`
-- Usa SVG para mejor calidad en impresión
-- Se puede convertir a PDF si es necesario
-
----
-
-## 🔧 Editar Logos
-
-Los archivos SVG son editables. Puedes abrirlos en:
-- **Figma** (importar SVG)
-- **Adobe Illustrator**
-- **Inkscape** (gratis)
-- **Editor de texto** (para cambios simples)
-
-### Cambiar colores
-Abre el SVG en un editor de texto y busca:
-- `#E3120B` - Rojo signature
-- `#1a1a1a` - Negro
-- `#6b6b6b` - Gris
-
-### Exportar nuevos tamaños
-Usa el archivo `logo-export.html` en la raíz del proyecto:
-```bash
-npx playwright screenshot "file://$(pwd)/logo-export.html?type=square" output.png --viewport-size=WIDTHxHEIGHT
+```
+logos/
+├── svg/                    # Vectoriales (fuente original)
+│   ├── logo-full.svg       # Logo completo (400x120)
+│   ├── logo-horizontal.svg # Versión apaisada para headers (500x80)
+│   ├── logo-icon.svg       # Solo barras de datos (100x100)
+│   ├── logo-full-white.svg # Para fondos oscuros
+│   └── logo-full-mono.svg  # Monocromático para impresión B&N
+├── png/                    # Rasterizados retina-ready
+│   ├── logo-full@1x.png    # 400x120
+│   ├── logo-full@2x.png    # 800x240 (retina)
+│   ├── logo-full@3x.png    # 1200x360 (super retina)
+│   ├── logo-icon-*.png     # 256x256, 512x512, 1024x1024
+│   ├── favicon-*.png       # 16x16, 32x32
+│   └── apple-touch-icon.png # 180x180
+├── social/                 # Optimizado para redes
+│   ├── instagram-profile.png   # 1080x1080
+│   ├── facebook-profile.png    # 1080x1080
+│   ├── facebook-cover.png      # 1702x630
+│   └── og-image.png            # 1200x630 (links en redes)
+└── print/                  # Alta resolución
+    └── logo-300dpi.png     # 3000x900 (10" a 300 DPI)
 ```
 
 ---
 
-## 📐 Dimensiones Recomendadas por Plataforma
+## 🎨 Identidad Visual
 
-| Plataforma | Tipo | Tamaño | Archivo |
-|------------|------|--------|---------|
-| Facebook | Perfil | 400x400 | logo-400x400.png |
-| Facebook | Portada | 820x312 | Editar logo-horizontal.png |
-| Instagram | Perfil | 400x400 | logo-400x400.png |
-| Twitter | Perfil | 400x400 | logo-400x400.png |
-| Twitter | Header | 1500x500 | Editar logo-horizontal.png |
-| LinkedIn | Logo | 400x400 | logo-400x400.png |
-| LinkedIn | Banner | 1128x191 | Editar logo-horizontal.png |
-| Web | Header | Escalable | logo-horizontal.svg |
-| Web | Favicon | 32x32 | favicon-32x32.png |
-| Open Graph | Preview | 1200x630 | og-image.png |
+### Colores (de BRAND.md)
+- **Primario:** `#002D63` (azul institucional)
+- **Secundario:** `#666666` (gris neutral)
+- **Acento:** `#FF6B35` (naranja para CTAs)
 
----
+### Tipografía
+- **Headings:** Manrope
+- **Body:** Inter
 
-## ✅ Checklist de Deploy
-
-- [x] SVG creados (vectoriales)
-- [x] PNG generados (todos los tamaños)
-- [x] Favicon configurado en `layout.tsx`
-- [x] Open Graph configurado
-- [x] Twitter Card configurado
-- [ ] Subir logo-400x400.png a Facebook (perfil)
-- [ ] Subir logo-400x400.png a Instagram (perfil)
-- [ ] Subir logo-400x400.png a Twitter (perfil)
-- [ ] Subir logo-400x400.png a LinkedIn (perfil)
-- [ ] Crear portadas custom para cada red (dimensiones específicas)
+### Concepto del Logo
+**Barras de datos ascendentes:**
+- Gris (#666) → Azul (#002D63) → Azul (#002D63) → Naranja (#FF6B35)
+- Representa crecimiento, análisis de datos, progresión
+- Minimalista, profesional, moderno
 
 ---
 
-**Última actualización:** 2026-02-20
+## 📱 Guía de Uso por Plataforma
+
+### Website (elnortedelpais.com)
+**Header:** `svg/logo-horizontal.svg`  
+**Favicon:** `png/favicon-32x32.png`, `png/favicon-16x16.png`  
+**Apple Touch Icon:** `png/apple-touch-icon.png`  
+**Open Graph:** `social/og-image.png`
+
+### Instagram
+**Perfil:** `social/instagram-profile.png` (1080x1080)  
+**Story templates:** Usar `svg/logo-icon.svg` como watermark
+
+### Facebook
+**Perfil:** `social/facebook-profile.png` (1080x1080)  
+**Portada:** `social/facebook-cover.png` (1702x630)  
+**Links (OG):** `social/og-image.png` (automático)
+
+### Twitter/X
+**Perfil:** `social/instagram-profile.png` (reutilizar)  
+**Header:** Crear custom 1500x500 si es necesario  
+**Cards:** `social/og-image.png`
+
+### LinkedIn
+**Logo empresa:** `social/facebook-profile.png`  
+**Banner:** Crear custom 1128x191 si es necesario
+
+### Email/Newsletter
+**Header:** `png/logo-full@2x.png` (800x240)  
+Reducir a 400-600px de ancho en el email
+
+### Impresión
+**Vectorial:** `svg/logo-full.svg` (importar en diseño)  
+**Rasterizado:** `print/logo-300dpi.png` (3000x900 a 300 DPI)
+
+---
+
+## 🔄 Workflow: Workspace → Producción
+
+**1. Editar siempre en workspace:**
+```bash
+~/.openclaw/workspace/elnortedelpais/assets/logos/svg/
+```
+
+**2. Regenerar PNG si cambias SVG:**
+```bash
+cd ~/.openclaw/workspace/elnortedelpais/assets/logos
+./regenerate-png.sh  # (crear este script si hacemos cambios frecuentes)
+```
+
+**3. Copiar a proyecto web:**
+```bash
+cp -r ~/.openclaw/workspace/elnortedelpais/assets/logos/* \
+      ~/Documents/elnortedelpais.com/public/logos/
+```
+
+**4. Deploy a Vercel:**
+```bash
+cd ~/Documents/elnortedelpais.com
+git add public/logos
+git commit -m "Update brand kit"
+git push
+```
+
+---
+
+## ✅ Checklist de Implementación
+
+### Website
+- [ ] Actualizar header con nuevo logo
+- [ ] Actualizar favicon
+- [ ] Actualizar Open Graph metadata
+- [ ] Verificar en mobile y desktop
+
+### Redes Sociales
+- [ ] Instagram: perfil
+- [ ] Facebook: perfil + portada
+- [ ] Twitter/X: perfil + header
+- [ ] LinkedIn: logo empresa
+
+### Documentación
+- [ ] Actualizar README.md del proyecto web
+- [ ] Actualizar BRAND.md si hay cambios
+- [ ] Archivar logos viejos (ya hecho: `logos-OLD-20260221`)
+
+---
+
+## 🎯 Quick Reference
+
+| Necesitas... | Usa este archivo |
+|--------------|------------------|
+| Logo para web header | `svg/logo-horizontal.svg` |
+| Favicon | `png/favicon-32x32.png` |
+| Perfil Instagram/Facebook | `social/instagram-profile.png` |
+| Compartir link en redes | `social/og-image.png` |
+| Impresión tarjetas/flyers | `print/logo-300dpi.png` o `svg/logo-full.svg` |
+| Email signature | `png/logo-full@2x.png` |
+| App icon | `png/logo-icon-512x512.png` |
+
+---
+
+**Última actualización:** 2026-02-21  
+**Brand kit generado por:** Andrés (OpenClaw)  
+**Aprobado por:** Marcelo Torres

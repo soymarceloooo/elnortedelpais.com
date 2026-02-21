@@ -57,7 +57,7 @@ export const SERIES_CONFIG: Record<
   },
   "propiedad-destacada": {
     label: "Propiedad Destacada",
-    color: "bg-[#E3120B]",
+    color: "bg-[#FF6B35]",
     description: "Análisis de propiedades y zonas industriales",
   },
   "verdad-o-mito": {

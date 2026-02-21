@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t-2 border-[#E3120B] bg-[#1a1a1a] text-white">
+    <footer className="border-t-2 border-[#002D63] bg-[#1a1a1a] text-white">
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-8 sm:grid-cols-3">
           {/* Brand */}
@@ -25,7 +25,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/noticias"
-                  className="font-serif text-sm text-zinc-300 hover:text-[#E3120B] transition-colors"
+                  className="font-serif text-sm text-zinc-300 hover:text-[#FF6B35] transition-colors"
                 >
                   Noticias
                 </Link>
@@ -33,7 +33,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/propiedades"
-                  className="font-serif text-sm text-zinc-300 hover:text-[#E3120B] transition-colors"
+                  className="font-serif text-sm text-zinc-300 hover:text-[#FF6B35] transition-colors"
                 >
                   Propiedades
                 </Link>
@@ -41,7 +41,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/mercado"
-                  className="font-serif text-sm text-zinc-300 hover:text-[#E3120B] transition-colors"
+                  className="font-serif text-sm text-zinc-300 hover:text-[#FF6B35] transition-colors"
                 >
                   Mercado
                 </Link>
@@ -49,7 +49,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/nosotros"
-                  className="font-serif text-sm text-zinc-300 hover:text-[#E3120B] transition-colors"
+                  className="font-serif text-sm text-zinc-300 hover:text-[#FF6B35] transition-colors"
                 >
                   Nosotros
                 </Link>
@@ -66,7 +66,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:contacto@elnortedelpais.com"
-                  className="font-serif text-sm text-zinc-300 hover:text-[#E3120B] transition-colors"
+                  className="font-serif text-sm text-zinc-300 hover:text-[#FF6B35] transition-colors"
                 >
                   contacto@elnortedelpais.com
                 </a>

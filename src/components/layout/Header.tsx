@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import Navigation from "./Navigation";
 
@@ -9,8 +10,8 @@ export default function Header() {
 
   return (
     <header className="border-b border-zinc-200 bg-white">
-      {/* The Economist signature red bar */}
-      <div className="bg-[#E3120B] h-1" />
+      {/* Brand signature bar */}
+      <div className="bg-[#002D63] h-1" />
       
       <div className="mx-auto max-w-6xl px-4">
         {/* Top bar */}
@@ -18,7 +19,7 @@ export default function Header() {
           <span className="text-zinc-600">Monterrey, Nuevo León, México</span>
           <Link
             href="/nosotros"
-            className="text-zinc-600 hover:text-[#E3120B] transition-colors font-medium"
+            className="text-zinc-600 hover:text-[#002D63] transition-colors font-medium"
           >
             Nosotros
           </Link>
@@ -26,13 +27,15 @@ export default function Header() {
 
         {/* Logo */}
         <div className="py-6 text-center border-b border-zinc-100">
-          <Link href="/">
-            <h1 className="font-display text-4xl font-bold tracking-tight text-[#1a1a1a] sm:text-5xl">
-              El Norte del País
-            </h1>
-            <p className="mt-2 text-sm font-sans text-zinc-500 uppercase tracking-wider">
-              Inteligencia del mercado industrial
-            </p>
+          <Link href="/" className="inline-block">
+            <Image
+              src="/logos/svg/logo-horizontal.svg"
+              alt="El Norte del País - Inteligencia del Mercado Industrial"
+              width={500}
+              height={80}
+              priority
+              className="h-auto w-full max-w-md mx-auto"
+            />
           </Link>
         </div>
 

@@ -30,7 +30,7 @@ export default function Home() {
             </h2>
             <Link
               href="/noticias"
-              className="font-sans text-sm font-semibold text-[#E3120B] hover:text-[#002D63] uppercase tracking-wide"
+              className="font-sans text-sm font-semibold text-[#FF6B35] hover:text-[#002D63] uppercase tracking-wide"
             >
               Ver todas →
             </Link>
@@ -54,7 +54,7 @@ export default function Home() {
         {/* Sidebar */}
         <aside className="space-y-8">
           {/* Newsletter */}
-          <div className="border-2 border-[#E3120B] p-6 bg-[#f5f5f5]">
+          <div className="border-2 border-[#FF6B35] p-6 bg-[#f5f5f5]">
             <h3 className="font-display text-xl font-bold text-[#1a1a1a]">
               Resumen semanal
             </h3>
@@ -76,7 +76,7 @@ export default function Home() {
                 </h3>
                 <Link
                   href="/propiedades"
-                  className="font-sans text-sm font-semibold text-[#E3120B] hover:text-[#002D63] uppercase tracking-wide"
+                  className="font-sans text-sm font-semibold text-[#FF6B35] hover:text-[#002D63] uppercase tracking-wide"
                 >
                   Ver todas →
                 </Link>
@@ -111,7 +111,7 @@ export default function Home() {
             </div>
             <Link
               href="/mercado"
-              className="mt-5 block text-center text-sm font-sans font-semibold text-[#E3120B] hover:text-white bg-white hover:bg-[#E3120B] py-2 px-4 transition-colors uppercase tracking-wide"
+              className="mt-5 block text-center text-sm font-sans font-semibold text-[#FF6B35] hover:text-white bg-white hover:bg-[#FF6B35] py-2 px-4 transition-colors uppercase tracking-wide"
             >
               Ver datos completos →
             </Link>

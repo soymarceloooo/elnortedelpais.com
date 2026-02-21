@@ -115,5 +115,44 @@
     "tipo": "Industrial",
     "año_fundacion": 2025,
     "descripcion": "Primer parque institucional sostenible de gran escala en García. Desarrollo en dos etapas iniciando con 45 hectáreas. Anunciado en septiembre 2025."
+  },
+  {
+    "id": 10,
+    "nombre": "CPA Logistics Center ADN",
+    "municipio": "García",
+    "desarrolladora": "CPA Americas",
+    "lat": 25.8065,
+    "lng": -100.5825,
+    "hectareas": null,
+    "ocupacion_pct": null,
+    "tipo": "Logístico",
+    "año_fundacion": null,
+    "descripcion": "Centro logístico desarrollado por CPA Americas, uno de los líderes en bienes raíces industriales de México."
+  },
+  {
+    "id": 11,
+    "nombre": "Pocket Park Norte 2",
+    "municipio": "García",
+    "desarrolladora": null,
+    "lat": 25.8175,
+    "lng": -100.5815,
+    "hectareas": null,
+    "ocupacion_pct": null,
+    "tipo": "Industrial",
+    "año_fundacion": 2026,
+    "descripcion": "Vinculado a la cadena de proveeduría de Volvo. Inauguración programada para Q1 2026."
+  },
+  {
+    "id": 12,
+    "nombre": "La Sierra Industrial Park",
+    "municipio": "García",
+    "desarrolladora": "Grupo TURME",
+    "lat": 25.8105,
+    "lng": -100.5695,
+    "hectareas": null,
+    "ocupacion_pct": null,
+    "tipo": "Industrial",
+    "año_fundacion": 2024,
+    "descripcion": "Lotes industriales en Av. Abraham Lincoln, adaptados para uso de suelo de industria ligera en la zona industrial de García."
   }
 ]

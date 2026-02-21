@@ -7,7 +7,7 @@ export default function PropertyCard({
   property: PropertyFrontmatter;
 }) {
   return (
-    <article className="group overflow-hidden border-2 border-zinc-200 bg-white transition-all hover:border-[#E3120B]">
+    <article className="group overflow-hidden border-2 border-zinc-200 bg-white transition-all hover:border-[#FF6B35]">
       <div className="bg-[#f5f5f5] px-6 py-8 text-center border-b-2 border-zinc-200">
         <span className="text-4xl">
           {property.type === "industrial" ? "🏭" : "🏢"}
@@ -23,7 +23,7 @@ export default function PropertyCard({
           </span>
         </div>
         <Link href={`/propiedades/${property.slug}`}>
-          <h3 className="mt-3 font-display text-lg font-bold text-[#1a1a1a] group-hover:text-[#E3120B] transition-colors leading-tight">
+          <h3 className="mt-3 font-display text-lg font-bold text-[#1a1a1a] group-hover:text-[#FF6B35] transition-colors leading-tight">
             {property.title}
           </h3>
         </Link>
@@ -49,7 +49,7 @@ export default function PropertyCard({
         )}
         <Link
           href={`/propiedades/${property.slug}`}
-          className="mt-4 inline-block font-sans text-sm font-semibold text-[#E3120B] hover:text-[#002D63] uppercase tracking-wide"
+          className="mt-4 inline-block font-sans text-sm font-semibold text-[#FF6B35] hover:text-[#002D63] uppercase tracking-wide"
         >
           Ver detalles →
         </Link>

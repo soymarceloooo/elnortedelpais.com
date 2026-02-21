@@ -47,17 +47,17 @@ export default function NewsletterForm() {
         placeholder="tu@email.com"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-full border-2 border-[#1a1a1a] px-4 py-3 font-serif text-sm focus:border-[#E3120B] focus:outline-none"
+        className="w-full border-2 border-[#1a1a1a] px-4 py-3 font-serif text-sm focus:border-[#FF6B35] focus:outline-none"
       />
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full bg-[#E3120B] px-5 py-3 font-sans text-sm font-bold text-white uppercase tracking-wide transition-colors hover:bg-[#002D63] disabled:opacity-50"
+        className="w-full bg-[#FF6B35] px-5 py-3 font-sans text-sm font-bold text-white uppercase tracking-wide transition-colors hover:bg-[#002D63] disabled:opacity-50"
       >
         {status === "loading" ? "..." : "Suscribirse"}
       </button>
       {status === "error" && (
-        <p className="font-sans text-xs text-[#E3120B]">
+        <p className="font-sans text-xs text-[#FF6B35]">
           Error al suscribirse. Intenta de nuevo.
         </p>
       )}

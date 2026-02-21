@@ -31,8 +31,8 @@ export default function Navigation({ mobileOpen }: { mobileOpen: boolean }) {
                 href={item.href}
                 className={`block px-5 py-3 text-sm font-sans font-semibold uppercase tracking-wide transition-colors ${
                   isActive
-                    ? "text-[#E3120B] border-b-2 border-[#E3120B]"
-                    : "text-[#1a1a1a] hover:text-[#E3120B]"
+                    ? "text-[#FF6B35] border-b-2 border-[#FF6B35]"
+                    : "text-[#1a1a1a] hover:text-[#FF6B35]"
                 }`}
               >
                 {item.label}

@@ -17,7 +17,7 @@ export default function ArticleCard({
             {formatDate(article.date)}
           </time>
         </div>
-        <h3 className="mt-3 font-display text-2xl font-bold text-[#1a1a1a] group-hover:text-[#E3120B] transition-colors leading-tight">
+        <h3 className="mt-3 font-display text-2xl font-bold text-[#1a1a1a] group-hover:text-[#FF6B35] transition-colors leading-tight">
           {article.title}
         </h3>
         <p className="mt-2 font-serif text-[#1a1a1a] line-clamp-2 leading-relaxed">
@@ -28,7 +28,7 @@ export default function ArticleCard({
             {article.tags.slice(0, 4).map((tag) => (
               <span
                 key={tag}
-                className="font-sans border border-[#E3120B] px-3 py-1 text-xs text-[#E3120B] font-semibold uppercase tracking-wide"
+                className="font-sans border border-[#FF6B35] px-3 py-1 text-xs text-[#FF6B35] font-semibold uppercase tracking-wide"
               >
                 {tag}
               </span>
