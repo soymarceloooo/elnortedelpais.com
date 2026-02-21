@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Map, { Marker, Popup } from 'react-map-gl'
+import Map, { Marker, Popup } from 'react-map-gl/mapbox'
 import { Parque } from '@/types/parque'
 import { supabase } from '@/lib/supabase'
 import 'mapbox-gl/dist/mapbox-gl.css'
