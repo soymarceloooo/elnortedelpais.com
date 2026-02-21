@@ -35,7 +35,7 @@ async function seedParques() {
   // Inserta los parques
   const { data, error } = await supabase
     .from('parques_industriales')
-    .insert(parques.map(p => ({
+    .insert(parques.map((p: any) => ({
       nombre: p.nombre,
       municipio: p.municipio,
       desarrolladora: p.desarrolladora,
@@ -45,7 +45,16 @@ async function seedParques() {
       ocupacion_pct: p.ocupacion_pct,
       tipo: p.tipo,
       año_fundacion: p.año_fundacion,
-      descripcion: p.descripcion
+      descripcion: p.descripcion,
+      // Precios
+      renta_usd_m2_min: p.precios?.renta_usd_m2_min || null,
+      renta_usd_m2_max: p.precios?.renta_usd_m2_max || null,
+      venta_mxn_m2_min: p.precios?.venta_mxn_m2_min || null,
+      venta_mxn_m2_max: p.precios?.venta_mxn_m2_max || null,
+      precio_fuente: p.precios?.fuente || null,
+      precio_confianza: p.precios?.confianza || 'sin_dato',
+      precio_actualizado_at: p.precios?.fecha_actualizacion || null,
+      hectareas_totales: p.hectareas
     })))
     .select()
 

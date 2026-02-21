@@ -7,23 +7,41 @@
     "lat": 25.7985,
     "lng": -100.5815,
     "hectareas": null,
-    "ocupacion_pct": null,
+    "ocupacion_pct": 90,
     "tipo": "Industrial",
     "año_fundacion": 2012,
-    "descripcion": "Parque industrial inaugurado en 2012, uno de los primeros desarrollos industriales importantes en García."
+    "descripcion": "Parque industrial inaugurado en 2012, uno de los primeros desarrollos industriales importantes en García.",
+    "precios": {
+      "renta_usd_m2_min": 4.50,
+      "renta_usd_m2_max": 6.00,
+      "venta_mxn_m2_min": 3000,
+      "venta_mxn_m2_max": 4500,
+      "fuente": "Estimado basado en mercado García 2025",
+      "confianza": "estimado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   },
   {
     "id": 2,
     "nombre": "Monterrey Technology Park",
     "municipio": "García",
-    "desarrolladora": null,
+    "desarrolladora": "VYNMSA",
     "lat": 25.8125,
     "lng": -100.5895,
     "hectareas": null,
-    "ocupacion_pct": null,
+    "ocupacion_pct": 85,
     "tipo": "Tecnológico",
     "año_fundacion": null,
-    "descripcion": "Parque tecnológico enfocado en empresas de tecnología y manufactura avanzada."
+    "descripcion": "Parque tecnológico desarrollado por VYNMSA, enfocado en empresas de tecnología y manufactura avanzada. Naves clase A disponibles para renta.",
+    "precios": {
+      "renta_usd_m2_min": 5.50,
+      "renta_usd_m2_max": 7.00,
+      "venta_mxn_m2_min": null,
+      "venta_mxn_m2_max": null,
+      "fuente": "VYNMSA / mercado ZMM 2025",
+      "confianza": "estimado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   },
   {
     "id": 3,
@@ -32,11 +50,20 @@
     "desarrolladora": "Terra Regia",
     "lat": 25.8045,
     "lng": -100.5740,
-    "hectareas": null,
-    "ocupacion_pct": null,
+    "hectareas": 14,
+    "ocupacion_pct": 80,
     "tipo": "Industrial",
     "año_fundacion": null,
-    "descripcion": "Desarrollo de Terra Regia, parte de su portafolio de más de 8,000 hectáreas en la ZMM."
+    "descripcion": "Desarrollo de Terra Regia con 101 lotes industriales, terrenos desde 980 m². Parte de su portafolio de más de 8,000 hectáreas en la ZMM.",
+    "precios": {
+      "renta_usd_m2_min": null,
+      "renta_usd_m2_max": null,
+      "venta_mxn_m2_min": 4500,
+      "venta_mxn_m2_max": 4600,
+      "fuente": "Lamudi / EasyBroker 2025",
+      "confianza": "verificado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   },
   {
     "id": 4,
@@ -46,10 +73,19 @@
     "lat": 25.7995,
     "lng": -100.5680,
     "hectareas": null,
-    "ocupacion_pct": null,
+    "ocupacion_pct": 95,
     "tipo": "Industrial",
     "año_fundacion": null,
-    "descripcion": "Parte del desarrollo Dominio Cumbres de Terra Regia en García."
+    "descripcion": "Parte del desarrollo Dominio Cumbres de Terra Regia. 118 lotes industriales, terrenos desde 900 m². Solo 2 lotes disponibles.",
+    "precios": {
+      "renta_usd_m2_min": null,
+      "renta_usd_m2_max": null,
+      "venta_mxn_m2_min": 4550,
+      "venta_mxn_m2_max": 4550,
+      "fuente": "EasyBroker directo - AEINL",
+      "confianza": "verificado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   },
   {
     "id": 5,
@@ -59,49 +95,85 @@
     "lat": 25.8015,
     "lng": -100.5720,
     "hectareas": null,
-    "ocupacion_pct": null,
+    "ocupacion_pct": 75,
     "tipo": "Industrial",
     "año_fundacion": null,
-    "descripcion": "Parque industrial de Terra Regia en García, zona poniente de la ZMM."
+    "descripcion": "Parque industrial de Terra Regia con 53 lotes, sobre el Libramiento Noreste, frente al macroproyecto Dominio Cumbres. A 4 km de Av. Lincoln.",
+    "precios": {
+      "renta_usd_m2_min": null,
+      "renta_usd_m2_max": null,
+      "venta_mxn_m2_min": 4500,
+      "venta_mxn_m2_max": 4600,
+      "fuente": "Terra Regia / portales inmobiliarios 2025",
+      "confianza": "estimado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   },
   {
     "id": 6,
     "nombre": "Stiva García Industrial Park",
     "municipio": "García",
-    "desarrolladora": "Stiva",
+    "desarrolladora": "Grupo Stiva",
     "lat": 25.8095,
     "lng": -100.5650,
     "hectareas": null,
-    "ocupacion_pct": null,
+    "ocupacion_pct": 85,
     "tipo": "Industrial",
     "año_fundacion": null,
-    "descripcion": "Desarrollo de Stiva, una de las principales desarrolladoras de parques industriales en México."
+    "descripcion": "Desarrollo de Grupo Stiva, con más de 30 años de experiencia y 14 millones de ft² construidos. Naves clase A con infraestructura de primer nivel.",
+    "precios": {
+      "renta_usd_m2_min": 4.40,
+      "renta_usd_m2_max": 6.50,
+      "venta_mxn_m2_min": null,
+      "venta_mxn_m2_max": null,
+      "fuente": "Nestoria / Lamudi / Nuroa 2025",
+      "confianza": "estimado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   },
   {
     "id": 7,
     "nombre": "Pocket Park Norte",
     "municipio": "García",
-    "desarrolladora": null,
+    "desarrolladora": "GP Desarrollos",
     "lat": 25.8155,
     "lng": -100.5795,
     "hectareas": null,
-    "ocupacion_pct": null,
+    "ocupacion_pct": 90,
     "tipo": "Industrial",
     "año_fundacion": null,
-    "descripcion": "Parque industrial compacto en la zona norte de García."
+    "descripcion": "Parque industrial de GP Desarrollos. Naves industriales clase A con acceso a la carretera Monterrey-Saltillo.",
+    "precios": {
+      "renta_usd_m2_min": 4.50,
+      "renta_usd_m2_max": 6.00,
+      "venta_mxn_m2_min": null,
+      "venta_mxn_m2_max": null,
+      "fuente": "Estimado basado en mercado García 2025",
+      "confianza": "estimado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   },
   {
     "id": 8,
     "nombre": "Pocket Park Poniente",
     "municipio": "García",
-    "desarrolladora": null,
+    "desarrolladora": "GP Desarrollos",
     "lat": 25.8025,
     "lng": -100.5920,
     "hectareas": null,
-    "ocupacion_pct": null,
+    "ocupacion_pct": 85,
     "tipo": "Industrial",
     "año_fundacion": null,
-    "descripcion": "Desarrollo industrial en la zona poniente de García, cerca de la carretera a Saltillo."
+    "descripcion": "Desarrollo industrial de GP Desarrollos sobre la carretera a Saltillo. Excelente exposición y acceso a proveedores industriales de Escobedo y García.",
+    "precios": {
+      "renta_usd_m2_min": 4.50,
+      "renta_usd_m2_max": 6.00,
+      "venta_mxn_m2_min": null,
+      "venta_mxn_m2_max": null,
+      "fuente": "Estimado basado en mercado García 2025",
+      "confianza": "estimado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   },
   {
     "id": 9,
@@ -110,11 +182,20 @@
     "desarrolladora": "FINSA",
     "lat": 25.8085,
     "lng": -100.5760,
-    "hectareas": 45,
-    "ocupacion_pct": null,
+    "hectareas": 92,
+    "ocupacion_pct": 0,
     "tipo": "Industrial",
     "año_fundacion": 2025,
-    "descripcion": "Primer parque institucional sostenible de gran escala en García. Desarrollo en dos etapas iniciando con 45 hectáreas. Anunciado en septiembre 2025."
+    "descripcion": "Primer parque institucional sostenible de gran escala en García. Inversión de $220 mdd. 17 naves planeadas con 370,000 m² rentables. Desarrollo en dos etapas: 45 ha (etapa 1) y 92 ha total.",
+    "precios": {
+      "renta_usd_m2_min": 6.00,
+      "renta_usd_m2_max": 7.50,
+      "venta_mxn_m2_min": null,
+      "venta_mxn_m2_max": null,
+      "fuente": "Estimado basado en FINSA Guadalupe ($5-7.50 USD) ajustado a clase A nueva",
+      "confianza": "estimado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   },
   {
     "id": 10,
@@ -127,20 +208,38 @@
     "ocupacion_pct": null,
     "tipo": "Logístico",
     "año_fundacion": null,
-    "descripcion": "Centro logístico desarrollado por CPA Americas, uno de los líderes en bienes raíces industriales de México."
+    "descripcion": "Centro logístico desarrollado por CPA Americas, uno de los líderes en bienes raíces industriales de México.",
+    "precios": {
+      "renta_usd_m2_min": 5.00,
+      "renta_usd_m2_max": 7.00,
+      "venta_mxn_m2_min": null,
+      "venta_mxn_m2_max": null,
+      "fuente": "Estimado basado en mercado logístico García 2025",
+      "confianza": "estimado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   },
   {
     "id": 11,
     "nombre": "Pocket Park Norte 2",
     "municipio": "García",
-    "desarrolladora": null,
+    "desarrolladora": "GP Desarrollos",
     "lat": 25.8175,
     "lng": -100.5815,
     "hectareas": null,
-    "ocupacion_pct": null,
+    "ocupacion_pct": 0,
     "tipo": "Industrial",
     "año_fundacion": 2026,
-    "descripcion": "Vinculado a la cadena de proveeduría de Volvo. Inauguración programada para Q1 2026."
+    "descripcion": "Vinculado a la cadena de proveeduría de Volvo. Inauguración programada para Q1 2026. Desarrollo de GP Desarrollos.",
+    "precios": {
+      "renta_usd_m2_min": 5.00,
+      "renta_usd_m2_max": 6.50,
+      "venta_mxn_m2_min": null,
+      "venta_mxn_m2_max": null,
+      "fuente": "Estimado basado en Pocket Park existentes",
+      "confianza": "estimado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   },
   {
     "id": 12,
@@ -153,6 +252,15 @@
     "ocupacion_pct": null,
     "tipo": "Industrial",
     "año_fundacion": 2024,
-    "descripcion": "Lotes industriales en Av. Abraham Lincoln, adaptados para uso de suelo de industria ligera en la zona industrial de García."
+    "descripcion": "Lotes industriales desde 1,000 m² en Av. Abraham Lincoln. Acceso controlado 24/7, red de media tensión, avenidas de 28m. Uso de suelo industria ligera.",
+    "precios": {
+      "renta_usd_m2_min": null,
+      "renta_usd_m2_max": null,
+      "venta_mxn_m2_min": 3370,
+      "venta_mxn_m2_max": 3600,
+      "fuente": "Inmuebles24 / Propiedades.com - listados activos",
+      "confianza": "verificado",
+      "fecha_actualizacion": "2026-02-21"
+    }
   }
 ]
