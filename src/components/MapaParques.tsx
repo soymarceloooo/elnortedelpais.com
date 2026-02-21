@@ -8,7 +8,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || ''
 
-export default function MapaParquesPage() {
+export default function MapaParques() {
   const [parques, setParques] = useState<Parque[]>([])
   const [selectedParque, setSelectedParque] = useState<Parque | null>(null)
   const [filtroTipo, setFiltroTipo] = useState<string>('todos')
@@ -144,113 +144,93 @@ export default function MapaParquesPage() {
 
           {/* Lista de parques */}
           <div>
-            <h2 className="font-semibold text-lg mb-3">
-              Parques ({parquesFiltrados.length})
-            </h2>
+            <h2 className="font-semibold text-lg mb-3">Parques ({parquesFiltrados.length})</h2>
             <div className="space-y-2">
               {parquesFiltrados.map(parque => (
-                <div
+                <button
                   key={parque.id}
                   onClick={() => setSelectedParque(parque)}
-                  className="p-3 border rounded cursor-pointer hover:bg-gray-50 transition"
+                  className="w-full text-left p-3 rounded border hover:bg-gray-50 transition-colors"
                 >
-                  <div className="font-medium">{parque.nombre}</div>
-                  <div className="text-xs text-gray-600 mt-1">
-                    <span className="inline-block mr-2">{parque.tipo}</span>
-                    {parque.desarrolladora && (
-                      <span className="inline-block">· {parque.desarrolladora}</span>
-                    )}
+                  <div className="font-medium text-sm">{parque.nombre}</div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {parque.desarrolladora || 'Independiente'}
                   </div>
-                </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span 
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: getColorByTipo(parque.tipo) }}
+                    />
+                    <span className="text-xs text-gray-600">{parque.tipo}</span>
+                  </div>
+                </button>
               ))}
             </div>
           </div>
         </aside>
 
-        {/* Map */}
-        <main className="flex-1">
-          {MAPBOX_TOKEN ? (
-            <Map
-              mapboxAccessToken={MAPBOX_TOKEN}
-              initialViewState={{
-                longitude: -100.575,
-                latitude: 25.805,
-                zoom: 11
-              }}
-              style={{ width: '100%', height: '100%' }}
-              mapStyle="mapbox://styles/mapbox/light-v11"
-            >
-              {parquesFiltrados.map(parque => (
-                <Marker
-                  key={parque.id}
-                  longitude={parque.lng}
-                  latitude={parque.lat}
-                  anchor="bottom"
-                  onClick={e => {
-                    e.originalEvent.stopPropagation()
-                    setSelectedParque(parque)
-                  }}
+        {/* Mapa */}
+        <div className="flex-1 relative">
+          <Map
+            initialViewState={{
+              longitude: -100.5800,
+              latitude: 25.8000,
+              zoom: 12
+            }}
+            style={{ width: '100%', height: '100%' }}
+            mapStyle="mapbox://styles/mapbox/streets-v12"
+            mapboxAccessToken={MAPBOX_TOKEN}
+          >
+            {/* Markers */}
+            {parquesFiltrados.map(parque => (
+              <Marker
+                key={parque.id}
+                longitude={parque.lng}
+                latitude={parque.lat}
+                anchor="bottom"
+                onClick={(e) => {
+                  e.originalEvent.stopPropagation()
+                  setSelectedParque(parque)
+                }}
+              >
+                <div 
+                  className="w-8 h-8 rounded-full border-2 border-white shadow-lg cursor-pointer hover:scale-110 transition-transform flex items-center justify-center text-white text-xs font-bold"
+                  style={{ backgroundColor: getColorByTipo(parque.tipo) }}
                 >
-                  <div
-                    className="w-6 h-6 rounded-full cursor-pointer border-2 border-white shadow-lg"
-                    style={{ backgroundColor: getColorByTipo(parque.tipo) }}
-                  />
-                </Marker>
-              ))}
+                  P
+                </div>
+              </Marker>
+            ))}
 
-              {selectedParque && (
-                <Popup
-                  longitude={selectedParque.lng}
-                  latitude={selectedParque.lat}
-                  anchor="top"
-                  onClose={() => setSelectedParque(null)}
-                  className="min-w-[250px]"
-                >
-                  <div className="p-2">
-                    <h3 className="font-bold text-base mb-2">{selectedParque.nombre}</h3>
-                    <div className="text-sm space-y-1">
-                      <div>
-                        <span className="font-medium">Tipo:</span> {selectedParque.tipo}
-                      </div>
-                      {selectedParque.desarrolladora && (
-                        <div>
-                          <span className="font-medium">Desarrolladora:</span> {selectedParque.desarrolladora}
-                        </div>
-                      )}
-                      {selectedParque.hectareas && (
-                        <div>
-                          <span className="font-medium">Tamaño:</span> {selectedParque.hectareas} ha
-                        </div>
-                      )}
-                      {selectedParque.año_fundacion && (
-                        <div>
-                          <span className="font-medium">Fundado:</span> {selectedParque.año_fundacion}
-                        </div>
-                      )}
-                      {selectedParque.descripcion && (
-                        <div className="mt-2 text-xs text-gray-600 border-t pt-2">
-                          {selectedParque.descripcion}
-                        </div>
-                      )}
-                    </div>
+            {/* Popup */}
+            {selectedParque && (
+              <Popup
+                longitude={selectedParque.lng}
+                latitude={selectedParque.lat}
+                anchor="top"
+                onClose={() => setSelectedParque(null)}
+                closeOnClick={false}
+              >
+                <div className="p-2">
+                  <h3 className="font-semibold text-sm mb-1">{selectedParque.nombre}</h3>
+                  <div className="text-xs text-gray-600 space-y-1">
+                    <div>📍 {selectedParque.municipio}</div>
+                    {selectedParque.desarrolladora && (
+                      <div>🏢 {selectedParque.desarrolladora}</div>
+                    )}
+                    <div>🏭 {selectedParque.tipo}</div>
+                    {selectedParque.año_fundacion && (
+                      <div>📅 Fundado: {selectedParque.año_fundacion}</div>
+                    )}
+                    {selectedParque.descripcion && (
+                      <div className="mt-2 text-xs">{selectedParque.descripcion}</div>
+                    )}
                   </div>
-                </Popup>
-              )}
-            </Map>
-          ) : (
-            <div className="flex items-center justify-center h-full bg-gray-100">
-              <div className="text-center p-8">
-                <h2 className="text-xl font-bold mb-2">Configuración pendiente</h2>
-                <p className="text-gray-600 mb-4">
-                  Agrega tu token de Mapbox en <code className="bg-gray-200 px-2 py-1 rounded">.env.local</code>
-                </p>
-                <pre className="text-left bg-white p-4 rounded text-xs">
-                  NEXT_PUBLIC_MAPBOX_TOKEN=your_token_here
-                </pre>
-              </div>
-            </div>
-          )}
-        </main>
+                </div>
+              </Popup>
+            )}
+          </Map>
+        </div>
       </div>
     </div>
   )
