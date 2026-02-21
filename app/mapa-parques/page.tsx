@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Map, { Marker, Popup } from 'react-map-gl'
 import { Parque } from '@/types/parque'
-import parquesData from '@/data/parques-industriales.json'
+import { supabase } from '@/lib/supabase'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || ''
@@ -13,10 +13,28 @@ export default function MapaParquesPage() {
   const [selectedParque, setSelectedParque] = useState<Parque | null>(null)
   const [filtroTipo, setFiltroTipo] = useState<string>('todos')
   const [filtroDesarrolladora, setFiltroDesarrolladora] = useState<string>('todos')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    // Cargar datos locales
-    setParques(parquesData as Parque[])
+    async function loadParques() {
+      try {
+        const { data, error } = await supabase
+          .from('parques_industriales')
+          .select('*')
+          .order('nombre')
+        
+        if (error) throw error
+        if (data) setParques(data as Parque[])
+      } catch (err) {
+        console.error('Error cargando parques:', err)
+        setError('Error al cargar los parques industriales')
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    loadParques()
   }, [])
 
   // Filtrar parques
@@ -38,6 +56,31 @@ export default function MapaParquesPage() {
       case 'Logístico': return '#666666'
       default: return '#002D63'
     }
+  }
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#002D63] mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando parques industriales...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50">
+        <div className="text-center">
+          <div className="text-red-500 text-4xl mb-4">⚠️</div>
+          <h2 className="text-xl font-semibold mb-2">Error al cargar datos</h2>
+          <p className="text-gray-600">{error}</p>
+        </div>
+      </div>
+    )
   }
 
   return (
