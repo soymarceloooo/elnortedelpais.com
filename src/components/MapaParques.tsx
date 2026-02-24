@@ -6,6 +6,28 @@ import { Parque } from '@/types/parque'
 import { supabase } from '@/lib/supabase'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
+/* Override Mapbox popup close button — more breathing room */
+const popupStyles = `
+.mapboxgl-popup-close-button {
+  font-size: 18px;
+  padding: 4px 8px;
+  right: 4px;
+  top: 4px;
+  color: #9ca3af;
+  line-height: 1;
+}
+.mapboxgl-popup-close-button:hover {
+  color: #374151;
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+.mapboxgl-popup-content {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12) !important;
+  padding: 0 !important;
+}
+`
+
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || ''
 
 /* ── SVG Icon Components ────────────────────────────────────── */
@@ -394,6 +416,7 @@ export default function MapaParques() {
 
   return (
     <div className="flex flex-col" style={{ height: 'calc(100vh - 200px)', minHeight: '500px' }}>
+      <style dangerouslySetInnerHTML={{ __html: popupStyles }} />
       {/* Header */}
       <div className="bg-[#002D63] text-white px-4 py-3 sm:py-4">
         <h1 className="text-base sm:text-2xl font-bold leading-tight">{headerTitle}</h1>
