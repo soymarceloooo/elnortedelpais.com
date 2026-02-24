@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Map, { Marker, Popup } from 'react-map-gl/mapbox'
 import { Parque } from '@/types/parque'
 import { supabase } from '@/lib/supabase'
@@ -13,6 +13,7 @@ export default function MapaParques() {
   const [selectedParque, setSelectedParque] = useState<Parque | null>(null)
   const [filtroTipo, setFiltroTipo] = useState<string>('todos')
   const [filtroDesarrolladora, setFiltroDesarrolladora] = useState<string>('todos')
+  const [filtroMunicipio, setFiltroMunicipio] = useState<string>('todos')
   const [filtroPrecioMax, setFiltroPrecioMax] = useState<number>(10000)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -41,49 +42,86 @@ export default function MapaParques() {
     loadParques()
   }, [])
 
-  // Filtrar parques
-  const parquesFiltrados = parques.filter(p => {
+  // Get unique values for filters
+  const municipios = useMemo(() => 
+    Array.from(new Set(parques.map(p => p.municipio))).sort()
+  , [parques])
+  
+  const desarrolladoras = useMemo(() => 
+    Array.from(new Set(parques.map(p => p.desarrolladora).filter(Boolean))).sort() as string[]
+  , [parques])
+  
+  const tipos = useMemo(() => 
+    Array.from(new Set(parques.map(p => p.tipo))).sort()
+  , [parques])
+
+  // Filter parks
+  const parquesFiltrados = useMemo(() => parques.filter(p => {
     const matchTipo = filtroTipo === 'todos' || p.tipo === filtroTipo
     const matchDev = filtroDesarrolladora === 'todos' || p.desarrolladora === filtroDesarrolladora
+    const matchMunicipio = filtroMunicipio === 'todos' || p.municipio === filtroMunicipio
     const precioVenta = p.venta_mxn_m2_min || 0
     const matchPrecio = precioVenta === 0 || precioVenta <= filtroPrecioMax
-    return matchTipo && matchDev && matchPrecio
-  })
+    return matchTipo && matchDev && matchMunicipio && matchPrecio
+  }), [parques, filtroTipo, filtroDesarrolladora, filtroMunicipio, filtroPrecioMax])
 
-  // Calcular stats
-  const parquesConPrecioVenta = parques.filter(p => p.venta_mxn_m2_min || p.venta_mxn_m2_max)
-  const parquesConPrecioRenta = parques.filter(p => p.renta_usd_m2_min || p.renta_usd_m2_max)
-  
-  const precioVentaPromedio = parquesConPrecioVenta.length > 0
-    ? Math.round(parquesConPrecioVenta.reduce((sum, p) => {
-        const avg = ((p.venta_mxn_m2_min || 0) + (p.venta_mxn_m2_max || 0)) / 2
-        return sum + avg
-      }, 0) / parquesConPrecioVenta.length)
-    : null
+  // Stats based on filtered parks
+  const stats = useMemo(() => {
+    const filtered = parquesFiltrados
+    const conPrecioVenta = filtered.filter(p => p.venta_mxn_m2_min || p.venta_mxn_m2_max)
+    const conPrecioRenta = filtered.filter(p => p.renta_usd_m2_min || p.renta_usd_m2_max)
+    
+    const precioVentaPromedio = conPrecioVenta.length > 0
+      ? Math.round(conPrecioVenta.reduce((sum, p) => {
+          const avg = ((p.venta_mxn_m2_min || 0) + (p.venta_mxn_m2_max || 0)) / 2
+          return sum + avg
+        }, 0) / conPrecioVenta.length)
+      : null
 
-  const precioRentaPromedio = parquesConPrecioRenta.length > 0
-    ? (parquesConPrecioRenta.reduce((sum, p) => {
-        const avg = ((p.renta_usd_m2_min || 0) + (p.renta_usd_m2_max || 0)) / 2
-        return sum + avg
-      }, 0) / parquesConPrecioRenta.length).toFixed(2)
-    : null
+    const precioRentaPromedio = conPrecioRenta.length > 0
+      ? (conPrecioRenta.reduce((sum, p) => {
+          const avg = ((p.renta_usd_m2_min || 0) + (p.renta_usd_m2_max || 0)) / 2
+          return sum + avg
+        }, 0) / conPrecioRenta.length).toFixed(2)
+      : null
 
-  const ocupacionPromedio = parques.filter(p => p.ocupacion_pct).length > 0
-    ? Math.round(parques.reduce((sum, p) => sum + (p.ocupacion_pct || 0), 0) / parques.filter(p => p.ocupacion_pct).length)
-    : null
+    const conOcupacion = filtered.filter(p => p.ocupacion_pct)
+    const ocupacionPromedio = conOcupacion.length > 0
+      ? Math.round(conOcupacion.reduce((sum, p) => sum + (p.ocupacion_pct || 0), 0) / conOcupacion.length)
+      : null
 
-  const parquesConEspacio = parques.filter(p => (p.ocupacion_pct || 100) < 95).length
-  const desarrolladoras = Array.from(new Set(parques.map(p => p.desarrolladora).filter(Boolean)))
-  const tipos = Array.from(new Set(parques.map(p => p.tipo)))
+    const conEspacio = filtered.filter(p => (p.ocupacion_pct || 100) < 95).length
+    const totalMunicipios = new Set(filtered.map(p => p.municipio)).size
 
-  const getColorByTipo = (tipo: string) => {
-    switch (tipo) {
-      case 'Industrial': return '#002D63'
-      case 'Tecnológico': return '#FF6B35'
-      case 'Logístico': return '#666666'
-      default: return '#002D63'
+    return { precioVentaPromedio, precioRentaPromedio, ocupacionPromedio, conEspacio, totalMunicipios }
+  }, [parquesFiltrados])
+
+  const getColorByMunicipio = (municipio: string) => {
+    const colors: Record<string, string> = {
+      'Apodaca': '#002D63',
+      'Monterrey': '#1a5276',
+      'Santa Catarina': '#6c3483',
+      'García': '#117a65',
+      'General Escobedo': '#b9770e',
+      'Ciénega de Flores': '#922b21',
+      'Guadalupe': '#1f618d',
+      'San Nicolás de los Garza': '#239b56',
+      'Salinas Victoria': '#d35400',
+      'Pesquería': '#7d3c98',
+      'El Carmen': '#2e86c1',
+      'San Pedro Garza García': '#17a589',
+      'Juárez': '#ca6f1e',
     }
+    return colors[municipio] || '#002D63'
   }
+
+  const headerTitle = filtroMunicipio === 'todos' 
+    ? 'Mapa de Parques Industriales — Área Metropolitana de Monterrey'
+    : `Mapa de Parques Industriales — ${filtroMunicipio}, NL`
+  
+  const headerSubtitle = filtroMunicipio === 'todos'
+    ? `El Norte del País · ${parques.length} parques en ${municipios.length} municipios`
+    : `El Norte del País · ${parquesFiltrados.length} parques`
 
   if (loading) {
     return (
@@ -112,32 +150,64 @@ export default function MapaParques() {
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-gray-50 p-3 rounded">
-          <div className="text-2xl font-bold text-[#002D63]">{parques.length}</div>
+          <div className="text-2xl font-bold text-[#002D63]">{parquesFiltrados.length}</div>
           <div className="text-xs text-gray-600">Parques totales</div>
         </div>
         <div className="bg-gray-50 p-3 rounded">
-          <div className="text-2xl font-bold text-green-600">{parquesConEspacio}/{parques.length}</div>
+          <div className="text-2xl font-bold text-green-600">{stats.conEspacio}/{parquesFiltrados.length}</div>
           <div className="text-xs text-gray-600">Con espacio</div>
         </div>
       </div>
-      {precioRentaPromedio && (
+      {filtroMunicipio === 'todos' && (
+        <div className="bg-gray-50 p-3 rounded">
+          <div className="text-2xl font-bold text-[#002D63]">{stats.totalMunicipios}</div>
+          <div className="text-xs text-gray-600">Municipios</div>
+        </div>
+      )}
+      {stats.precioRentaPromedio && (
         <div className="bg-blue-50 p-3 rounded border border-blue-100">
           <div className="text-sm font-semibold text-blue-900">Renta promedio</div>
-          <div className="text-xl font-bold text-blue-700">${precioRentaPromedio} USD/m²</div>
+          <div className="text-xl font-bold text-blue-700">${stats.precioRentaPromedio} USD/m²</div>
           <div className="text-xs text-blue-600">por mes</div>
         </div>
       )}
-      {precioVentaPromedio && (
+      {stats.precioVentaPromedio && (
         <div className="bg-green-50 p-3 rounded border border-green-100">
           <div className="text-sm font-semibold text-green-900">Venta promedio</div>
-          <div className="text-xl font-bold text-green-700">${precioVentaPromedio.toLocaleString()} MXN/m²</div>
+          <div className="text-xl font-bold text-green-700">${stats.precioVentaPromedio.toLocaleString()} MXN/m²</div>
           <div className="text-xs text-green-600">lotes industriales</div>
         </div>
       )}
-      {ocupacionPromedio && (
+      {stats.ocupacionPromedio && (
         <div className="bg-gray-50 p-3 rounded">
           <div className="text-sm font-semibold text-gray-700">Ocupación promedio</div>
-          <div className="text-xl font-bold text-[#002D63]">{ocupacionPromedio}%</div>
+          <div className="text-xl font-bold text-[#002D63]">{stats.ocupacionPromedio}%</div>
+        </div>
+      )}
+      
+      {/* Breakdown by municipality */}
+      {filtroMunicipio === 'todos' && (
+        <div className="border-t pt-3 mt-3">
+          <h3 className="text-sm font-semibold mb-2 text-gray-700">Por municipio</h3>
+          <div className="space-y-1.5">
+            {municipios.map(m => {
+              const count = parquesFiltrados.filter(p => p.municipio === m).length
+              if (count === 0) return null
+              return (
+                <button
+                  key={m}
+                  onClick={() => setFiltroMunicipio(m)}
+                  className="w-full flex items-center justify-between text-xs hover:bg-gray-50 rounded px-2 py-1 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: getColorByMunicipio(m) }} />
+                    <span>{m}</span>
+                  </div>
+                  <span className="font-semibold text-gray-600">{count}</span>
+                </button>
+              )
+            })}
+          </div>
         </div>
       )}
     </div>
@@ -145,6 +215,20 @@ export default function MapaParques() {
 
   const FiltrosContent = () => (
     <div className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium mb-1">Municipio</label>
+        <select 
+          value={filtroMunicipio}
+          onChange={(e) => setFiltroMunicipio(e.target.value)}
+          className="w-full border rounded px-3 py-2 text-sm"
+        >
+          <option value="todos">Todos ({parques.length})</option>
+          {municipios.map(m => {
+            const count = parques.filter(p => p.municipio === m).length
+            return <option key={m} value={m}>{m} ({count})</option>
+          })}
+        </select>
+      </div>
       <div>
         <label className="block text-sm font-medium mb-1">Tipo</label>
         <select 
@@ -167,7 +251,7 @@ export default function MapaParques() {
         >
           <option value="todos">Todas</option>
           {desarrolladoras.map(dev => (
-            <option key={dev} value={dev || ''}>{dev || 'Independiente'}</option>
+            <option key={dev} value={dev}>{dev}</option>
           ))}
         </select>
       </div>
@@ -189,6 +273,19 @@ export default function MapaParques() {
           <span>$10,000</span>
         </div>
       </div>
+      {(filtroMunicipio !== 'todos' || filtroTipo !== 'todos' || filtroDesarrolladora !== 'todos') && (
+        <button
+          onClick={() => {
+            setFiltroMunicipio('todos')
+            setFiltroTipo('todos')
+            setFiltroDesarrolladora('todos')
+            setFiltroPrecioMax(10000)
+          }}
+          className="w-full text-sm text-[#002D63] font-medium py-2 border border-[#002D63] rounded hover:bg-[#002D63] hover:text-white transition-colors"
+        >
+          Limpiar filtros
+        </button>
+      )}
     </div>
   )
 
@@ -218,15 +315,21 @@ export default function MapaParques() {
                 </span>
               )}
             </div>
-            <div className="text-xs text-gray-500 mt-1">
-              {parque.desarrolladora || 'Independiente'}
-            </div>
             <div className="flex items-center gap-2 mt-1">
               <span 
                 className="w-2 h-2 rounded-full shrink-0"
-                style={{ backgroundColor: getColorByTipo(parque.tipo) }}
+                style={{ backgroundColor: getColorByMunicipio(parque.municipio) }}
               />
-              <span className="text-xs text-gray-600">{parque.tipo}</span>
+              <span className="text-xs text-gray-500">{parque.municipio}</span>
+              {parque.desarrolladora && (
+                <>
+                  <span className="text-xs text-gray-300">·</span>
+                  <span className="text-xs text-gray-500">{parque.desarrolladora}</span>
+                </>
+              )}
+            </div>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-xs text-gray-400">{parque.tipo}</span>
             </div>
             <div className="mt-2 text-xs space-y-0.5">
               {parque.renta_usd_m2_min && (
@@ -250,17 +353,19 @@ export default function MapaParques() {
     <div className="flex flex-col" style={{ height: 'calc(100vh - 200px)', minHeight: '500px' }}>
       {/* Header */}
       <div className="bg-[#002D63] text-white px-4 py-3 sm:py-4">
-        <h1 className="text-lg sm:text-2xl font-bold">Mapa de Parques Industriales - García, NL</h1>
-        <p className="text-xs sm:text-sm opacity-90">El Norte del País · 100% de cobertura</p>
+        <h1 className="text-base sm:text-2xl font-bold leading-tight">{headerTitle}</h1>
+        <p className="text-xs sm:text-sm opacity-90 mt-0.5">{headerSubtitle}</p>
       </div>
 
       {/* Desktop: sidebar + map | Mobile: map full + bottom sheet */}
       <div className="flex flex-1 overflow-hidden relative">
         
-        {/* Desktop Sidebar - hidden on mobile */}
+        {/* Desktop Sidebar */}
         <aside className="hidden lg:block w-80 bg-white border-r overflow-y-auto p-4 shrink-0">
           <div className="mb-6">
-            <h2 className="font-semibold text-lg mb-3">Estadísticas García, NL</h2>
+            <h2 className="font-semibold text-lg mb-3">
+              Estadísticas {filtroMunicipio === 'todos' ? 'AMM' : filtroMunicipio}
+            </h2>
             <StatsContent />
           </div>
           <div className="mb-6">
@@ -277,9 +382,9 @@ export default function MapaParques() {
         <div className="flex-1 relative">
           <Map
             initialViewState={{
-              longitude: -100.52,
-              latitude: 25.76,
-              zoom: 11.5
+              longitude: -100.30,
+              latitude: 25.75,
+              zoom: 10
             }}
             style={{ width: '100%', height: '100%' }}
             mapStyle={mapStyle === 'streets' ? 'mapbox://styles/mapbox/streets-v12' : 'mapbox://styles/mapbox/satellite-streets-v12'}
@@ -298,8 +403,9 @@ export default function MapaParques() {
                 }}
               >
                 <div 
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white shadow-lg cursor-pointer hover:scale-110 transition-transform flex items-center justify-center text-white text-xs font-bold"
-                  style={{ backgroundColor: getColorByTipo(parque.tipo) }}
+                  className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-white shadow-lg cursor-pointer hover:scale-110 transition-transform flex items-center justify-center text-white text-[10px] sm:text-xs font-bold"
+                  style={{ backgroundColor: getColorByMunicipio(parque.municipio) }}
+                  title={parque.nombre}
                 >
                   P
                 </div>
@@ -319,7 +425,7 @@ export default function MapaParques() {
                   <h3 className="font-semibold text-sm sm:text-base mb-2">{selectedParque.nombre}</h3>
                   
                   <div className="text-xs text-gray-600 space-y-1 mb-2">
-                    <div>📍 {selectedParque.municipio}</div>
+                    <div>📍 {selectedParque.municipio}, NL</div>
                     {selectedParque.desarrolladora && <div>🏢 {selectedParque.desarrolladora}</div>}
                     <div>🏭 {selectedParque.tipo}</div>
                     {selectedParque.año_fundacion && <div>📅 Fundado: {selectedParque.año_fundacion}</div>}
@@ -329,7 +435,7 @@ export default function MapaParques() {
                     <div className="border-t pt-2 mb-2">
                       <div className="flex items-center justify-between mb-1.5">
                         <h4 className="font-semibold text-xs sm:text-sm">💰 Precios</h4>
-                        {selectedParque.precio_confianza && (
+                        {selectedParque.precio_confianza && selectedParque.precio_confianza !== 'sin_dato' && (
                           <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
                             selectedParque.precio_confianza === 'verificado' 
                               ? 'bg-green-100 text-green-700' 
@@ -390,14 +496,22 @@ export default function MapaParques() {
             className="absolute top-3 right-3 bg-white text-gray-700 px-3 py-2 rounded-lg shadow-md text-xs font-medium z-10 flex items-center gap-1.5 hover:bg-gray-50 border border-gray-200"
             onClick={() => setMapStyle(s => s === 'streets' ? 'satellite' : 'streets')}
           >
-            {mapStyle === 'streets' ? (
-              <>🛰️ Satélite</>
-            ) : (
-              <>🗺️ Mapa</>
-            )}
+            {mapStyle === 'streets' ? '🛰️ Satélite' : '🗺️ Mapa'}
           </button>
 
-          {/* Mobile: floating button to open panel */}
+          {/* Municipality quick filter chips on map */}
+          <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-1.5 max-w-[60%]">
+            {filtroMunicipio !== 'todos' && (
+              <button
+                onClick={() => setFiltroMunicipio('todos')}
+                className="bg-white text-gray-700 px-2.5 py-1.5 rounded-full shadow-md text-xs font-medium border border-gray-200 hover:bg-gray-50 flex items-center gap-1"
+              >
+                ✕ {filtroMunicipio}
+              </button>
+            )}
+          </div>
+
+          {/* Mobile: floating button */}
           <button
             className="lg:hidden absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#002D63] text-white px-5 py-2.5 rounded-full shadow-lg text-sm font-medium z-10 flex items-center gap-2"
             onClick={() => setPanelOpen(true)}
@@ -412,20 +526,16 @@ export default function MapaParques() {
         {/* Mobile Bottom Sheet */}
         {panelOpen && (
           <>
-            {/* Backdrop */}
             <div 
               className="lg:hidden fixed inset-0 bg-black/40 z-40"
               onClick={() => setPanelOpen(false)}
             />
             
-            {/* Sheet */}
             <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl z-50 max-h-[80vh] flex flex-col shadow-2xl animate-slide-up">
-              {/* Handle */}
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-10 h-1 bg-gray-300 rounded-full" />
               </div>
               
-              {/* Close button */}
               <button 
                 className="absolute top-3 right-4 p-1 text-gray-400"
                 onClick={() => setPanelOpen(false)}
@@ -435,7 +545,6 @@ export default function MapaParques() {
                 </svg>
               </button>
 
-              {/* Tabs */}
               <div className="flex border-b px-4 pt-1">
                 {(['lista', 'filtros', 'stats'] as const).map(tab => (
                   <button
@@ -453,7 +562,6 @@ export default function MapaParques() {
                 ))}
               </div>
 
-              {/* Content */}
               <div className="overflow-y-auto p-4 flex-1">
                 {activeTab === 'stats' && <StatsContent />}
                 {activeTab === 'filtros' && <FiltrosContent />}
