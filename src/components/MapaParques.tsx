@@ -154,12 +154,16 @@ function getPOIIcon(poi: StrategicPOI) {
 
 /* ── Component ───────────────────────────────────────────────── */
 
-export default function MapaParques() {
+interface MapaParquesProps {
+  initialMunicipio?: string
+}
+
+export default function MapaParques({ initialMunicipio }: MapaParquesProps = {}) {
   const [parques, setParques] = useState<Parque[]>([])
   const [selectedParque, setSelectedParque] = useState<Parque | null>(null)
   const [filtroTipo, setFiltroTipo] = useState<string>('todos')
   const [filtroDesarrolladora, setFiltroDesarrolladora] = useState<string>('todos')
-  const [filtroMunicipio, setFiltroMunicipio] = useState<string>('todos')
+  const [filtroMunicipio, setFiltroMunicipio] = useState<string>(initialMunicipio || 'todos')
   const [filtroPrecioMax, setFiltroPrecioMax] = useState<number>(10000)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
