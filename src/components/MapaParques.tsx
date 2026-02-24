@@ -18,6 +18,7 @@ export default function MapaParques() {
   const [error, setError] = useState<string | null>(null)
   const [panelOpen, setPanelOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<'stats' | 'filtros' | 'lista'>('lista')
+  const [mapStyle, setMapStyle] = useState<'streets' | 'satellite'>('streets')
 
   useEffect(() => {
     async function loadParques() {
@@ -281,7 +282,7 @@ export default function MapaParques() {
               zoom: 11.5
             }}
             style={{ width: '100%', height: '100%' }}
-            mapStyle="mapbox://styles/mapbox/streets-v12"
+            mapStyle={mapStyle === 'streets' ? 'mapbox://styles/mapbox/streets-v12' : 'mapbox://styles/mapbox/satellite-streets-v12'}
             mapboxAccessToken={MAPBOX_TOKEN}
           >
             {parquesFiltrados.map(parque => (
@@ -383,6 +384,18 @@ export default function MapaParques() {
               </Popup>
             )}
           </Map>
+
+          {/* Map style toggle */}
+          <button
+            className="absolute top-3 right-3 bg-white text-gray-700 px-3 py-2 rounded-lg shadow-md text-xs font-medium z-10 flex items-center gap-1.5 hover:bg-gray-50 border border-gray-200"
+            onClick={() => setMapStyle(s => s === 'streets' ? 'satellite' : 'streets')}
+          >
+            {mapStyle === 'streets' ? (
+              <>🛰️ Satélite</>
+            ) : (
+              <>🗺️ Mapa</>
+            )}
+          </button>
 
           {/* Mobile: floating button to open panel */}
           <button
