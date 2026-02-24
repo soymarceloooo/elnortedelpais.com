@@ -107,3 +107,12 @@ body {
   border-top: 1px solid var(--economist-light-gray);
   margin: 2.5rem 0;
 }
+
+/* Mobile bottom sheet animation */
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
