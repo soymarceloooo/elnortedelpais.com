@@ -8,6 +8,47 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || ''
 
+type POICategory = 'logistica' | 'plantas' | 'talento'
+
+interface StrategicPOI {
+  nombre: string
+  categoria: POICategory
+  lat: number
+  lng: number
+  descripcion: string
+  emoji: string
+}
+
+const STRATEGIC_POIS: StrategicPOI[] = [
+  // Infraestructura logística
+  { nombre: 'Aeropuerto Internacional de Monterrey (OMA)', categoria: 'logistica', lat: 25.7785, lng: -100.1069, descripcion: 'Principal hub aéreo del noreste de México. Conecta con EE.UU., Europa y Asia.', emoji: '✈️' },
+  { nombre: 'Interpuerto Monterrey', categoria: 'logistica', lat: 25.9290, lng: -100.2867, descripcion: 'Plataforma logística intermodal. Terminal de carga ferroviaria y aduanera.', emoji: '🚂' },
+  { nombre: 'Terminal Intermodal KCS Monterrey', categoria: 'logistica', lat: 25.7050, lng: -100.2300, descripcion: 'Terminal ferroviaria de Kansas City Southern. Conexión directa a Laredo, TX.', emoji: '🚂' },
+  { nombre: 'Cruce Fronterizo Colombia-Solidarity', categoria: 'logistica', lat: 27.1600, lng: -99.8700, descripcion: 'Cruce comercial internacional NL-Texas. Ruta directa a I-35.', emoji: '🛃' },
+  
+  // Plantas ancla
+  { nombre: 'KIA Motors México', categoria: 'plantas', lat: 25.7427, lng: -99.9819, descripcion: 'Planta automotriz. Capacidad: 400,000 vehículos/año. +7,000 empleos directos.', emoji: '🚗' },
+  { nombre: 'Carrier - Santa Catarina', categoria: 'plantas', lat: 25.6688, lng: -100.4496, descripcion: 'Planta de sistemas HVAC. Uno de los mayores empleadores de la zona poniente.', emoji: '🏭' },
+  { nombre: 'Ternium México', categoria: 'plantas', lat: 25.7280, lng: -100.3029, descripcion: 'Planta siderúrgica. Mayor productor de acero plano en México.', emoji: '🏭' },
+  { nombre: 'CEMEX - Centro de Operaciones', categoria: 'plantas', lat: 25.6520, lng: -100.3360, descripcion: 'Sede global de CEMEX. Multinacional cementera mexicana.', emoji: '🏢' },
+  { nombre: 'John Deere Monterrey', categoria: 'plantas', lat: 25.7180, lng: -100.2150, descripcion: 'Planta de manufactura de maquinaria agrícola e industrial.', emoji: '🚜' },
+  { nombre: 'Caterpillar Monterrey', categoria: 'plantas', lat: 25.7810, lng: -100.1720, descripcion: 'Planta de manufactura de maquinaria pesada y componentes.', emoji: '🏗️' },
+  { nombre: 'Whirlpool Monterrey', categoria: 'plantas', lat: 25.7550, lng: -100.2480, descripcion: 'Planta de manufactura de electrodomésticos.', emoji: '🏭' },
+  { nombre: 'BMW San Luis Potosí (referencia)', categoria: 'plantas', lat: 25.8200, lng: -100.0300, descripcion: 'Corredor automotriz que conecta con la planta BMW vía carretera 57.', emoji: '🚗' },
+  
+  // Talento e investigación
+  { nombre: 'PIIT - Parque de Investigación e Innovación Tecnológica', categoria: 'talento', lat: 25.7652, lng: -100.1252, descripcion: '38 centros de investigación. Nanotecnología, biotecnología, TI y más.', emoji: '🔬' },
+  { nombre: 'Tecnológico de Monterrey - Campus MTY', categoria: 'talento', lat: 25.6514, lng: -100.2895, descripcion: 'Universidad privada #1 de México. +36,000 estudiantes. Hub de emprendimiento.', emoji: '🎓' },
+  { nombre: 'UANL - Ciudad Universitaria', categoria: 'talento', lat: 25.7270, lng: -100.3115, descripcion: 'Universidad pública más grande del noreste. +215,000 estudiantes. Ingeniería y ciencias.', emoji: '🎓' },
+  { nombre: 'UDEM - Universidad de Monterrey', categoria: 'talento', lat: 25.6610, lng: -100.3580, descripcion: 'Universidad privada. Programas de ingeniería y negocios.', emoji: '🎓' },
+]
+
+const POI_CATEGORY_LABELS: Record<POICategory, string> = {
+  logistica: '🚛 Logística',
+  plantas: '🏭 Plantas Ancla',
+  talento: '🎓 Talento & I+D',
+}
+
 export default function MapaParques() {
   const [parques, setParques] = useState<Parque[]>([])
   const [selectedParque, setSelectedParque] = useState<Parque | null>(null)
@@ -20,6 +61,13 @@ export default function MapaParques() {
   const [panelOpen, setPanelOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<'stats' | 'filtros' | 'lista'>('lista')
   const [mapStyle, setMapStyle] = useState<'streets' | 'satellite'>('streets')
+  const [showPOIs, setShowPOIs] = useState<boolean>(true)
+  const [selectedPOI, setSelectedPOI] = useState<StrategicPOI | null>(null)
+  const [poiCategories, setPOICategories] = useState<Record<POICategory, boolean>>({
+    logistica: true,
+    plantas: true,
+    talento: true,
+  })
 
   useEffect(() => {
     async function loadParques() {
@@ -412,6 +460,53 @@ export default function MapaParques() {
               </Marker>
             ))}
 
+            {/* Strategic POIs */}
+            {showPOIs && STRATEGIC_POIS.filter(poi => poiCategories[poi.categoria]).map((poi, i) => (
+              <Marker
+                key={`poi-${i}`}
+                longitude={poi.lng}
+                latitude={poi.lat}
+                anchor="bottom"
+                onClick={(e) => {
+                  e.originalEvent.stopPropagation()
+                  setSelectedPOI(poi)
+                  setSelectedParque(null)
+                }}
+              >
+                <div 
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border-2 border-white shadow-lg cursor-pointer hover:scale-110 transition-transform flex items-center justify-center text-sm bg-white"
+                  title={poi.nombre}
+                >
+                  {poi.emoji}
+                </div>
+              </Marker>
+            ))}
+
+            {/* POI Popup */}
+            {selectedPOI && (
+              <Popup
+                longitude={selectedPOI.lng}
+                latitude={selectedPOI.lat}
+                anchor="top"
+                onClose={() => setSelectedPOI(null)}
+                closeOnClick={false}
+                maxWidth="300px"
+              >
+                <div className="p-2 sm:p-3 max-w-[260px]">
+                  <div className="flex items-start gap-2 mb-2">
+                    <span className="text-xl">{selectedPOI.emoji}</span>
+                    <div>
+                      <h3 className="font-semibold text-sm leading-tight">{selectedPOI.nombre}</h3>
+                      <span className="text-[10px] text-gray-500 uppercase tracking-wide">
+                        {POI_CATEGORY_LABELS[selectedPOI.categoria]}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">{selectedPOI.descripcion}</p>
+                </div>
+              </Popup>
+            )}
+
             {selectedParque && (
               <Popup
                 longitude={selectedParque.lng}
@@ -491,13 +586,40 @@ export default function MapaParques() {
             )}
           </Map>
 
-          {/* Map style toggle */}
-          <button
-            className="absolute top-3 right-3 bg-white text-gray-700 px-3 py-2 rounded-lg shadow-md text-xs font-medium z-10 flex items-center gap-1.5 hover:bg-gray-50 border border-gray-200"
-            onClick={() => setMapStyle(s => s === 'streets' ? 'satellite' : 'streets')}
-          >
-            {mapStyle === 'streets' ? '🛰️ Satélite' : '🗺️ Mapa'}
-          </button>
+          {/* Map controls - top right */}
+          <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
+            <button
+              className="bg-white text-gray-700 px-3 py-2 rounded-lg shadow-md text-xs font-medium flex items-center gap-1.5 hover:bg-gray-50 border border-gray-200"
+              onClick={() => setMapStyle(s => s === 'streets' ? 'satellite' : 'streets')}
+            >
+              {mapStyle === 'streets' ? '🛰️ Satélite' : '🗺️ Mapa'}
+            </button>
+            
+            {/* POI layer toggle */}
+            <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+              <button
+                className={`w-full px-3 py-2 text-xs font-medium flex items-center gap-1.5 transition-colors ${showPOIs ? 'text-[#002D63] bg-blue-50' : 'text-gray-500'}`}
+                onClick={() => setShowPOIs(v => !v)}
+              >
+                📍 Puntos clave {showPOIs ? '▾' : '▸'}
+              </button>
+              {showPOIs && (
+                <div className="border-t px-2 py-1.5 space-y-1">
+                  {(Object.entries(POI_CATEGORY_LABELS) as [POICategory, string][]).map(([key, label]) => (
+                    <label key={key} className="flex items-center gap-1.5 text-[11px] cursor-pointer hover:bg-gray-50 rounded px-1 py-0.5">
+                      <input
+                        type="checkbox"
+                        checked={poiCategories[key]}
+                        onChange={() => setPOICategories(prev => ({ ...prev, [key]: !prev[key] }))}
+                        className="rounded text-[#002D63] w-3 h-3"
+                      />
+                      {label}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
 
           {/* Municipality quick filter chips on map */}
           <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-1.5 max-w-[60%]">
